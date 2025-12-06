@@ -1,0 +1,68 @@
+# Flutter/Dart
+.build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+
+# Build outputs
+build/
+lib/generated/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Testing
+coverage/
+doc/
+
+# Rust
+native/rust/target/
+native/rust/Cargo.lock
+
+# Windows
+*.exe
+*.dll
+*.lib
+*.ilk
+*.pdb
+
+# Android
+*.apk
+*.ap_\n*.aab
+*.dex
+*.class
+*.o
+*.so
+*.bak
+
+# iOS
+*.ipa
+*.app
+*.dSYM.zip
+*.dSYM
+*.xcworkspace
+*.xcuserstate
+*.xcuserdata
+
+# Misc
+.env
+.env.local
+.env.*.local
+.cache/

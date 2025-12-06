@@ -1,0 +1,15 @@
+[package]
+name = "loro_ffi"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "loro_ffi"
+crate-type = ["cdylib", "staticlib"]  # 同时生成动态/静态库
+
+[dependencies]
+loro = { git = "https://github.com/loro-dev/loro.git" }
+libc = "0.2.0"
+
+[build-dependencies]
+cbindgen = "0.26.0"  # 头文件生成
