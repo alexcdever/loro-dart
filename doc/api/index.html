@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="flutter_loro_ffi API docs, for the Dart programming language.">
+  <title>flutter_loro_ffi - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">flutter_loro_ffi package</li>
+  </ol>
+  <div class="self-name">flutter_loro_ffi</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="flutter-loro-ffi">Flutter Loro FFI</h1>
+<p>Flutter插件，用于Loro FFI绑定，提供高性能、易用的CRDT文档管理接口。</p>
+<h2 id="-">🌟 特性</h2>
+<ul>
+<li><strong>高性能</strong>：基于Rust Loro库构建，效率极高</li>
+<li><strong>易用性</strong>：面向对象的Dart API，配备完整文档</li>
+<li><strong>跨平台</strong>：支持Android、iOS、Windows、macOS和Linux</li>
+<li><strong>CRDT同步</strong>：内置支持无冲突复制数据类型</li>
+<li><strong>实时协作</strong>：支持实时文档同步</li>
+<li><strong>可靠性</strong>：全面的错误处理和资源管理</li>
+</ul>
+<h2 id="--2">📋 要求</h2>
+<ul>
+<li>Flutter 2.10.0或更高版本</li>
+<li>Dart 2.17.0或更高版本</li>
+</ul>
+<h2 id="--3">🚀 快速开始</h2>
+<h3 id="">安装</h3>
+<p>将<code>flutter_loro_ffi</code>添加到您的<code>pubspec.yaml</code>依赖中：</p>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  flutter_loro_ffi: ^0.1.0
+</code></pre>
+<p>然后运行：</p>
+<pre class="language-bash"><code class="language-bash">flutter pub get
+</code></pre>
+<h3 id="-2">基本使用</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:flutter_loro_ffi/loro_ffi.dart';
+
+void main() {
+  // 创建文档实例
+  final doc = LoroDoc();
+  
+  try {
+    // 设置PeerID（可选，用于区分不同设备/用户）
+    doc.setPeerId(12345);
+    
+    // 插入文本
+    doc.insertText("Hello, ", 0);
+    doc.insertText("World!", 7);
+    
+    // 提交事务
+    doc.commit();
+    
+    // 获取文本内容
+    final text = doc.getText();
+    print("文档内容: $text"); // 输出: 文档内容: Hello, World!
+    
+    // 导出更新（用于同步）
+    final updates = doc.exportAllUpdates();
+    print("导出的更新大小: ${updates.length} 字节");
+    
+    // 创建另一个文档并导入更新
+    final doc2 = LoroDoc();
+    doc2.import(updates);
+    print("同步后的文档内容: ${doc2.getText()}"); // 输出: 同步后的文档内容: Hello, World!
+    
+    doc2.dispose();
+  } finally {
+    // 释放资源
+    doc.dispose();
+  }
+}
+</code></pre>
+<h2 id="-api">📚 API参考</h2>
+<h3 id="lorodoc">LoroDoc</h3>
+<h4 id="-3">构造函数</h4>
+<pre class="language-dart"><code class="language-dart">LoroDoc()
+</code></pre>
+<p>创建一个新的Loro文档实例。</p>
+<h4 id="-4">方法</h4>
+<h5 id="inserttextstring-text-int-position"><code>insertText(String text, int position)</code></h5>
+<p>在指定位置插入文本。</p>
+<ul>
+<li><strong>参数</strong>:
+<ul>
+<li><code>text</code>: 要插入的文本内容</li>
+<li><code>position</code>: 插入位置的索引</li>
+</ul>
+</li>
+</ul>
+<h5 id="deletetextint-start-int-length"><code>deleteText(int start, int length)</code></h5>
+<p>从指定位置开始删除指定长度的文本。</p>
+<ul>
+<li><strong>参数</strong>:
+<ul>
+<li><code>start</code>: 删除起始位置的索引</li>
+<li><code>length</code>: 要删除的文本长度</li>
+</ul>
+</li>
+</ul>
+<h5 id="gettext"><code>getText()</code></h5>
+<p>获取当前文档的文本内容。</p>
+<ul>
+<li><strong>返回</strong>: 当前文档的文本内容</li>
+</ul>
+<h5 id="commit"><code>commit()</code></h5>
+<p>提交当前事务，将所有操作持久化。</p>
+<h5 id="exportallupdates"><code>exportAllUpdates()</code></h5>
+<p>导出文档的所有更新，用于同步到其他设备。</p>
+<ul>
+<li><strong>返回</strong>: 包含所有更新的字节列表</li>
+</ul>
+<h5 id="importlistint-data"><code>import(List&lt;int&gt; data)</code></h5>
+<p>从其他设备导入更新，用于同步文档。</p>
+<ul>
+<li><strong>参数</strong>:
+<ul>
+<li><code>data</code>: 包含更新数据的字节列表</li>
+</ul>
+</li>
+</ul>
+<h5 id="setpeeridint-peerid"><code>setPeerId(int peerId)</code></h5>
+<p>设置文档的PeerID，用于标识不同的设备或用户。</p>
+<ul>
+<li><strong>参数</strong>:
+<ul>
+<li><code>peerId</code>: 要设置的PeerID</li>
+</ul>
+</li>
+</ul>
+<h5 id="getpeerid"><code>getPeerId()</code></h5>
+<p>获取当前文档的PeerID。</p>
+<ul>
+<li><strong>返回</strong>: 当前文档的PeerID</li>
+</ul>
+<h5 id="dispose"><code>dispose()</code></h5>
+<p>释放文档资源，必须在不再使用文档时调用。</p>
+<h2 id="--4">🧪 测试</h2>
+<h3 id="-5">运行测试</h3>
+<pre class="language-bash"><code class="language-bash">flutter test
+</code></pre>
+<h3 id="-6">运行带覆盖率的测试</h3>
+<pre class="language-bash"><code class="language-bash">flutter test --coverage
+genhtml -o coverage coverage/lcov.info
+</code></pre>
+<h3 id="-7">基准测试</h3>
+<pre class="language-bash"><code class="language-bash">dart test/benchmark_test.dart
+</code></pre>
+<h2 id="--5">📱 平台支持</h2>
+<table>
+<thead>
+<tr>
+<th>平台</th>
+<th>架构</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Android</td>
+<td>arm64-v8a, armeabi-v7a</td>
+</tr>
+<tr>
+<td>iOS</td>
+<td>arm64, x86_64</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>x64</td>
+</tr>
+<tr>
+<td>macOS</td>
+<td>x64, arm64</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td>x64</td>
+</tr>
+</tbody>
+</table>
+<h2 id="--6">🔧 开发</h2>
+<h3 id="-8">构建原生库</h3>
+<pre class="language-bash"><code class="language-bash"># 为所有平台构建
+flutter build ffi
+
+# 为特定平台构建
+flutter build ffi --target-platform android-arm64
+</code></pre>
+<h3 id="-9">生成文档</h3>
+<pre class="language-bash"><code class="language-bash">dart doc
+</code></pre>
+<h2 id="--7">📝 示例</h2>
+<p>查看<a href="example/">example</a>目录，获取一个完整的Flutter应用，演示<code>flutter_loro_ffi</code>的使用方法。</p>
+<h2 id="--8">🔗 相关链接</h2>
+<ul>
+<li><a href="https://github.com/loro-dev/loro.git">Loro官方仓库</a></li>
+<li><a href="https://dart.dev/guides/libraries/c-interop">FFI文档</a></li>
+<li><a href="https://flutter.dev/docs">Flutter文档</a></li>
+</ul>
+<h2 id="--9">📄 许可证</h2>
+<p>本项目采用MIT许可证 - 详见<a href="LICENSE">LICENSE</a>文件。</p>
+<h2 id="--10">🤝 贡献</h2>
+<p>欢迎贡献！请随时提交Pull Request。</p>
+<h2 id="--11">📧 支持</h2>
+<p>如果您遇到任何问题或有疑问，请提交<a href="https://github.com/alexcdever/loro-dart/issues">issue</a>。</p>
+<hr>
+<p>由Loro团队用心制作 ❤️</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="flutter_loro_ffi">
+  <span class="name"><a href="flutter_loro_ffi/">loro_ffi</a></span> 
+
+</dt>
+<dd>Flutter Loro FFI 插件主入口
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li class="self-crumb">flutter_loro_ffi package</li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">flutter_loro_ffi</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="flutter_loro_ffi/">loro_ffi</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    flutter_loro_ffi
+      0.1.0
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

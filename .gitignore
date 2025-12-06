@@ -30,7 +30,6 @@ logs/
 
 # Testing
 coverage/
-doc/
 
 # Rust
 native/rust/target/

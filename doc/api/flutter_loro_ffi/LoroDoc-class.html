@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the LoroDoc class from the flutter_loro_ffi library, for the Dart programming language.">
+  <title>LoroDoc class - flutter_loro_ffi library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">flutter_loro_ffi</a></li>
+    <li><a href="../flutter_loro_ffi/">loro_ffi.dart</a></li>
+    <li class="self-crumb">LoroDoc class</li>
+  </ol>
+  <div class="self-name">LoroDoc</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="flutter_loro_ffi&#47;flutter_loro_ffi-library-sidebar.html"
+    data-below-sidebar="flutter_loro_ffi&#47;LoroDoc-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">LoroDoc</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Loro文档Dart包装类</p>
+<p>这个类提供了对Rust Loro库的面向对象封装，用于管理CRDT文档。
+它封装了底层的FFI调用，提供了友好的Dart API接口。</p>
+<p>示例用法：</p>
+<pre class="language-dart"><code class="language-dart">final doc = LoroDoc();
+doc.insertText("Hello, World!", 0);
+doc.commit();
+final text = doc.getText();
+print(text); // 输出: Hello, World!
+doc.dispose();
+</code></pre>
+<p>注意：使用完文档后，必须调用<a href="../flutter_loro_ffi/LoroDoc/dispose.html">dispose</a>方法释放资源，
+或者使用<code>late final</code>和<code>addPostFrameCallback</code>确保资源被正确释放。</p>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="LoroDoc.new" class="callable">
+          <span class="name"><a href="../flutter_loro_ffi/LoroDoc/LoroDoc.html">LoroDoc</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          创建新的Loro文档
+        </dd>
+        <dt id="LoroDoc.fromPointer" class="callable">
+          <span class="name"><a href="../flutter_loro_ffi/LoroDoc/LoroDoc.fromPointer.html">LoroDoc.fromPointer</a></span><span class="signature">(<span class="parameter" id="fromPointer-param-_docPointer"><span class="type-annotation"><a href="../flutter_loro_ffi/LoroDocPointer.html">LoroDocPointer</a></span> <span class="parameter-name">_docPointer</span></span>)</span>
+        </dt>
+        <dd>
+          从现有指针创建文档（内部使用）
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="commit" class="callable">
+  <span class="name"><a href="../flutter_loro_ffi/LoroDoc/commit.html">commit</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  提交当前事务
+  
+
+</dd>
+
+        <dt id="deleteText" class="callable">
+  <span class="name"><a href="../flutter_loro_ffi/LoroDoc/deleteText.html">deleteText</a></span><span class="signature">(<wbr><span class="parameter" id="deleteText-param-start"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">start</span>, </span><span class="parameter" id="deleteText-param-length"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">length</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  从文档中删除文本
+  
+
+</dd>
+
+        <dt id="dispose" class="callable">
+  <span class="name"><a href="../flutter_loro_ffi/LoroDoc/dispose.html">dispose</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  释放文档资源
+  
+
+</dd>
+
+        <dt id="exportAllUpdates" class="callable">
+  <span class="name"><a href="../flutter_loro_ffi/LoroDoc/exportAllUpdates.html">exportAllUpdates</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  导出所有更新
+  
+
+</dd>
+
+        <dt id="finalize" class="callable">
+  <span class="name"><a href="../flutter_loro_ffi/LoroDoc/finalize.html">finalize</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  自动释放资源
+  
+
+</dd>
+
+        <dt id="getPeerId" class="callable">
+  <span class="name"><a href="../flutter_loro_ffi/LoroDoc/getPeerId.html">getPeerId</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取PeerID
+  
+
+</dd>
+
+        <dt id="getText" class="callable">
+  <span class="name"><a href="../flutter_loro_ffi/LoroDoc/getText.html">getText</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取文档文本内容
+  
+
+</dd>
+
+        <dt id="import" class="callable">
+  <span class="name"><a href="../flutter_loro_ffi/LoroDoc/import.html">import</a></span><span class="signature">(<wbr><span class="parameter" id="import-param-data"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span> <span class="parameter-name">data</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  导入更新
+  
+
+</dd>
+
+        <dt id="insertText" class="callable">
+  <span class="name"><a href="../flutter_loro_ffi/LoroDoc/insertText.html">insertText</a></span><span class="signature">(<wbr><span class="parameter" id="insertText-param-text"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">text</span>, </span><span class="parameter" id="insertText-param-position"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">position</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  插入文本到文档
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="setPeerId" class="callable">
+  <span class="name"><a href="../flutter_loro_ffi/LoroDoc/setPeerId.html">setPeerId</a></span><span class="signature">(<wbr><span class="parameter" id="setPeerId-param-peerId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">peerId</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  设置PeerID
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">flutter_loro_ffi</a></li>
+    <li><a href="../flutter_loro_ffi/">flutter_loro_ffi</a></li>
+    <li class="self-crumb">LoroDoc class</li>
+</ol>
+
+    <h5>flutter_loro_ffi library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    flutter_loro_ffi
+      0.1.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
