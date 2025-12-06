@@ -1,39 +1,39 @@
 # Flutter Loro FFI
 
-Flutter plugin for Loro FFI bindings, providing a high-performance, easy-to-use interface for CRDT document management.
+Flutter插件，用于Loro FFI绑定，提供高性能、易用的CRDT文档管理接口。
 
-## 🌟 Features
+## 🌟 特性
 
-- **High Performance**: Built on Rust Loro library for maximum efficiency
-- **Easy to Use**: Object-oriented Dart API with comprehensive documentation
-- **Cross-Platform**: Support for Android, iOS, Windows, macOS, and Linux
-- **CRDT Synchronization**: Built-in support for conflict-free replicated data types
-- **Real-time Collaboration**: Enables real-time document synchronization
-- **Reliable**: Comprehensive error handling and resource management
+- **高性能**：基于Rust Loro库构建，效率极高
+- **易用性**：面向对象的Dart API，配备完整文档
+- **跨平台**：支持Android、iOS、Windows、macOS和Linux
+- **CRDT同步**：内置支持无冲突复制数据类型
+- **实时协作**：支持实时文档同步
+- **可靠性**：全面的错误处理和资源管理
 
-## 📋 Requirements
+## 📋 要求
 
-- Flutter 2.10.0 or higher
-- Dart 2.17.0 or higher
+- Flutter 2.10.0或更高版本
+- Dart 2.17.0或更高版本
 
-## 🚀 Getting Started
+## 🚀 快速开始
 
-### Installation
+### 安装
 
-Add `flutter_loro_ffi` to your `pubspec.yaml` dependencies:
+将`flutter_loro_ffi`添加到您的`pubspec.yaml`依赖中：
 
 ```yaml
 dependencies:
   flutter_loro_ffi: ^0.1.0
 ```
 
-Then run:
+然后运行：
 
 ```bash
 flutter pub get
 ```
 
-### Basic Usage
+### 基本使用
 
 ```dart
 import 'package:flutter_loro_ffi/loro_ffi.dart';
@@ -74,7 +74,7 @@ void main() {
 }
 ```
 
-## 📚 API Reference
+## 📚 API参考
 
 ### LoroDoc
 
@@ -144,30 +144,30 @@ LoroDoc()
 
 释放文档资源，必须在不再使用文档时调用。
 
-## 🧪 Testing
+## 🧪 测试
 
-### Running Tests
+### 运行测试
 
 ```bash
 flutter test
 ```
 
-### Running with Coverage
+### 运行带覆盖率的测试
 
 ```bash
 flutter test --coverage
 genhtml -o coverage coverage/lcov.info
 ```
 
-### Benchmark Tests
+### 基准测试
 
 ```bash
 dart test/benchmark_test.dart
 ```
 
-## 📱 Platform Support
+## 📱 平台支持
 
-| Platform | Architectures |
+| 平台 | 架构 |
 |----------|---------------|
 | Android  | arm64-v8a, armeabi-v7a |
 | iOS      | arm64, x86_64 |
@@ -175,46 +175,46 @@ dart test/benchmark_test.dart
 | macOS    | x64, arm64 |
 | Linux    | x64 |
 
-## 🔧 Development
+## 🔧 开发
 
-### Building Native Libraries
+### 构建原生库
 
 ```bash
-# Build for all platforms
+# 为所有平台构建
 flutter build ffi
 
-# Build for specific platform
+# 为特定平台构建
 flutter build ffi --target-platform android-arm64
 ```
 
-### Generating Documentation
+### 生成文档
 
 ```bash
 dart doc
 ```
 
-## 📝 Example
+## 📝 示例
 
-Check out the [example](example/) directory for a complete Flutter app demonstrating the usage of `flutter_loro_ffi`.
+查看[example](example/)目录，获取一个完整的Flutter应用，演示`flutter_loro_ffi`的使用方法。
 
-## 🔗 Related Links
+## 🔗 相关链接
 
-- [Loro Official Repository](https://github.com/loro-dev/loro.git)
-- [FFI Documentation](https://dart.dev/guides/libraries/c-interop)
-- [Flutter Documentation](https://flutter.dev/docs)
+- [Loro官方仓库](https://github.com/loro-dev/loro.git)
+- [FFI文档](https://dart.dev/guides/libraries/c-interop)
+- [Flutter文档](https://flutter.dev/docs)
 
-## 📄 License
+## 📄 许可证
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+本项目采用MIT许可证 - 详见[LICENSE](LICENSE)文件。
 
-## 🤝 Contributing
+## 🤝 贡献
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+欢迎贡献！请随时提交Pull Request。
 
-## 📧 Support
+## 📧 支持
 
-If you encounter any issues or have questions, please file an [issue](https://github.com/your-repo/flutter_loro_ffi/issues).
+如果您遇到任何问题或有疑问，请提交[issue](https://github.com/alexcdever/loro-dart/issues)。
 
 ---
 
-Made with ❤️ by the Loro Team
+由Loro团队用心制作 ❤️
