@@ -1,5 +1,5 @@
-import 'package:flutter_loro_ffi/loro_ffi.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:loro_dart/loro_dart.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('LoroDoc', () {

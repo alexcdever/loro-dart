@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_loro_ffi:
+  loro_dart:
     # 当发布到pub.dev时，指定版本
     # version: 0.1.0
     # 开发时使用本地路径

@@ -148,3 +148,137 @@ final loroStringFree = loroFFILib
 final loroBytesFree = loroFFILib
   .lookup<NativeFunction<LoroBytesFreeFunc>>('loro_bytes_free')
   .asFunction<LoroBytesFree>();
+
+// Map容器操作绑定
+
+/// 设置Map中的键值对
+typedef LoroDocMapInsertFunc = Int32 Function(
+  LoroDocPointer doc,
+  Pointer<Utf8> key,
+  Pointer<Utf8> value
+);
+typedef LoroDocMapInsert = int Function(
+  LoroDocPointer doc,
+  Pointer<Utf8> key,
+  Pointer<Utf8> value
+);
+
+/// 获取Map中的值
+typedef LoroDocMapGetFunc = Pointer<Utf8> Function(
+  LoroDocPointer doc,
+  Pointer<Utf8> key
+);
+typedef LoroDocMapGet = Pointer<Utf8> Function(
+  LoroDocPointer doc,
+  Pointer<Utf8> key
+);
+
+/// 删除Map中的键值对
+typedef LoroDocMapDeleteFunc = Int32 Function(
+  LoroDocPointer doc,
+  Pointer<Utf8> key
+);
+typedef LoroDocMapDelete = int Function(
+  LoroDocPointer doc,
+  Pointer<Utf8> key
+);
+
+/// 获取Map的大小
+typedef LoroDocMapSizeFunc = Int64 Function(
+  LoroDocPointer doc
+);
+typedef LoroDocMapSize = int Function(
+  LoroDocPointer doc
+);
+
+// List容器操作绑定
+
+/// 向List末尾添加元素
+typedef LoroDocListPushFunc = Int32 Function(
+  LoroDocPointer doc,
+  Pointer<Utf8> value
+);
+typedef LoroDocListPush = int Function(
+  LoroDocPointer doc,
+  Pointer<Utf8> value
+);
+
+/// 获取List中的元素
+typedef LoroDocListGetFunc = Pointer<Utf8> Function(
+  LoroDocPointer doc,
+  Int64 index
+);
+typedef LoroDocListGet = Pointer<Utf8> Function(
+  LoroDocPointer doc,
+  int index
+);
+
+/// 删除List中的元素
+typedef LoroDocListDeleteFunc = Int32 Function(
+  LoroDocPointer doc,
+  Int64 pos,
+  Int64 len
+);
+typedef LoroDocListDelete = int Function(
+  LoroDocPointer doc,
+  int pos,
+  int len
+);
+
+/// 获取List的大小
+typedef LoroDocListSizeFunc = Int64 Function(
+  LoroDocPointer doc
+);
+typedef LoroDocListSize = int Function(
+  LoroDocPointer doc
+);
+
+/// 在指定位置插入元素
+typedef LoroDocListInsertFunc = Int32 Function(
+  LoroDocPointer doc,
+  Int64 index,
+  Pointer<Utf8> value
+);
+typedef LoroDocListInsert = int Function(
+  LoroDocPointer doc,
+  int index,
+  Pointer<Utf8> value
+);
+
+// Map函数绑定
+final loroDocMapInsert = loroFFILib
+  .lookup<NativeFunction<LoroDocMapInsertFunc>>('loro_doc_map_insert')
+  .asFunction<LoroDocMapInsert>();
+
+final loroDocMapGet = loroFFILib
+  .lookup<NativeFunction<LoroDocMapGetFunc>>('loro_doc_map_get')
+  .asFunction<LoroDocMapGet>();
+
+final loroDocMapDelete = loroFFILib
+  .lookup<NativeFunction<LoroDocMapDeleteFunc>>('loro_doc_map_delete')
+  .asFunction<LoroDocMapDelete>();
+
+final loroDocMapSize = loroFFILib
+  .lookup<NativeFunction<LoroDocMapSizeFunc>>('loro_doc_map_size')
+  .asFunction<LoroDocMapSize>();
+
+// List函数绑定
+final loroDocListPush = loroFFILib
+  .lookup<NativeFunction<LoroDocListPushFunc>>('loro_doc_list_push')
+  .asFunction<LoroDocListPush>();
+
+final loroDocListGet = loroFFILib
+  .lookup<NativeFunction<LoroDocListGetFunc>>('loro_doc_list_get')
+  .asFunction<LoroDocListGet>();
+
+final loroDocListDelete = loroFFILib
+  .lookup<NativeFunction<LoroDocListDeleteFunc>>('loro_doc_list_delete')
+  .asFunction<LoroDocListDelete>();
+
+final loroDocListSize = loroFFILib
+  .lookup<NativeFunction<LoroDocListSizeFunc>>('loro_doc_list_size')
+  .asFunction<LoroDocListSize>();
+
+final loroDocListInsert = loroFFILib
+  .lookup<NativeFunction<LoroDocListInsertFunc>>('loro_doc_list_insert')
+  .asFunction<LoroDocListInsert>();

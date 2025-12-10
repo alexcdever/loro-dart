@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="flutter_loro_ffi API docs, for the Dart programming language.">
-  <title>flutter_loro_ffi - Dart API docs</title>
+  <meta name="description" content="loro_dart API docs, for the Dart programming language.">
+  <title>loro_dart - Dart API docs</title>
 
 
   
@@ -24,9 +24,9 @@
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
-    <li class="self-crumb">flutter_loro_ffi package</li>
+    <li><a href="https://github.com/alexcdever/loro-dart">loro_dart package</a></li>
   </ol>
-  <div class="self-name">flutter_loro_ffi</div>
+  <div class="self-name">loro_dart</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -43,8 +43,8 @@
   <div id="dartdoc-main-content" class="main-content">
       
 <section class="desc markdown">
-  <h1 id="flutter-loro-ffi">Flutter Loro FFI</h1>
-<p>Flutter插件，用于Loro FFI绑定，提供高性能、易用的CRDT文档管理接口。</p>
+  <h1 id="loro-dart">Loro Dart</h1>
+<p>Dart/Flutter绑定，用于Loro FFI库，提供高性能、易用的CRDT文档管理接口。</p>
 <h2 id="-">🌟 特性</h2>
 <ul>
 <li><strong>高性能</strong>：基于Rust Loro库构建，效率极高</li>
@@ -61,15 +61,15 @@
 </ul>
 <h2 id="--3">🚀 快速开始</h2>
 <h3 id="">安装</h3>
-<p>将<code>flutter_loro_ffi</code>添加到您的<code>pubspec.yaml</code>依赖中：</p>
+<p>将<code>loro_dart</code>添加到您的<code>pubspec.yaml</code>依赖中：</p>
 <pre class="language-yaml"><code class="language-yaml">dependencies:
-  flutter_loro_ffi: ^0.1.0
+  loro_dart: ^0.1.0
 </code></pre>
 <p>然后运行：</p>
 <pre class="language-bash"><code class="language-bash">flutter pub get
 </code></pre>
 <h3 id="-2">基本使用</h3>
-<pre class="language-dart"><code class="language-dart">import 'package:flutter_loro_ffi/loro_ffi.dart';
+<pre class="language-dart"><code class="language-dart">import 'package:loro_dart/loro_ffi.dart';
 
 void main() {
   // 创建文档实例
@@ -112,7 +112,18 @@ void main() {
 <pre class="language-dart"><code class="language-dart">LoroDoc()
 </code></pre>
 <p>创建一个新的Loro文档实例。</p>
-<h4 id="-4">方法</h4>
+<h4 id="-4">从指针构造</h4>
+<pre class="language-dart"><code class="language-dart">LoroDoc.fromPointer(LoroDocPointer _docPointer)
+</code></pre>
+<p>从现有原生指针创建文档（主要用于内部测试和调试）。</p>
+<ul>
+<li><strong>参数</strong>:
+<ul>
+<li><code>_docPointer</code>: 原生文档指针</li>
+</ul>
+</li>
+</ul>
+<h4 id="-5">方法</h4>
 <h5 id="inserttextstring-text-int-position"><code>insertText(String text, int position)</code></h5>
 <p>在指定位置插入文本。</p>
 <ul>
@@ -122,6 +133,7 @@ void main() {
 <li><code>position</code>: 插入位置的索引</li>
 </ul>
 </li>
+<li><strong>抛出</strong>: <code>LoroDisposeException</code> - 如果文档已释放</li>
 </ul>
 <h5 id="deletetextint-start-int-length"><code>deleteText(int start, int length)</code></h5>
 <p>从指定位置开始删除指定长度的文本。</p>
@@ -132,18 +144,24 @@ void main() {
 <li><code>length</code>: 要删除的文本长度</li>
 </ul>
 </li>
+<li><strong>抛出</strong>: <code>LoroDisposeException</code> - 如果文档已释放</li>
 </ul>
 <h5 id="gettext"><code>getText()</code></h5>
 <p>获取当前文档的文本内容。</p>
 <ul>
 <li><strong>返回</strong>: 当前文档的文本内容</li>
+<li><strong>抛出</strong>: <code>LoroDisposeException</code> - 如果文档已释放</li>
 </ul>
 <h5 id="commit"><code>commit()</code></h5>
 <p>提交当前事务，将所有操作持久化。</p>
+<ul>
+<li><strong>抛出</strong>: <code>LoroDisposeException</code> - 如果文档已释放</li>
+</ul>
 <h5 id="exportallupdates"><code>exportAllUpdates()</code></h5>
 <p>导出文档的所有更新，用于同步到其他设备。</p>
 <ul>
 <li><strong>返回</strong>: 包含所有更新的字节列表</li>
+<li><strong>抛出</strong>: <code>LoroDisposeException</code> - 如果文档已释放</li>
 </ul>
 <h5 id="importlistint-data"><code>import(List&lt;int&gt; data)</code></h5>
 <p>从其他设备导入更新，用于同步文档。</p>
@@ -153,6 +171,7 @@ void main() {
 <li><code>data</code>: 包含更新数据的字节列表</li>
 </ul>
 </li>
+<li><strong>抛出</strong>: <code>LoroDisposeException</code> - 如果文档已释放</li>
 </ul>
 <h5 id="setpeeridint-peerid"><code>setPeerId(int peerId)</code></h5>
 <p>设置文档的PeerID，用于标识不同的设备或用户。</p>
@@ -162,23 +181,27 @@ void main() {
 <li><code>peerId</code>: 要设置的PeerID</li>
 </ul>
 </li>
+<li><strong>抛出</strong>: <code>LoroDisposeException</code> - 如果文档已释放</li>
 </ul>
 <h5 id="getpeerid"><code>getPeerId()</code></h5>
 <p>获取当前文档的PeerID。</p>
 <ul>
 <li><strong>返回</strong>: 当前文档的PeerID</li>
+<li><strong>抛出</strong>: <code>LoroDisposeException</code> - 如果文档已释放</li>
 </ul>
 <h5 id="dispose"><code>dispose()</code></h5>
 <p>释放文档资源，必须在不再使用文档时调用。</p>
+<h5 id="finalize"><code>finalize()</code></h5>
+<p>自动释放资源（内部使用）。</p>
 <h2 id="--4">🧪 测试</h2>
-<h3 id="-5">运行测试</h3>
+<h3 id="-6">运行测试</h3>
 <pre class="language-bash"><code class="language-bash">flutter test
 </code></pre>
-<h3 id="-6">运行带覆盖率的测试</h3>
+<h3 id="-7">运行带覆盖率的测试</h3>
 <pre class="language-bash"><code class="language-bash">flutter test --coverage
 genhtml -o coverage coverage/lcov.info
 </code></pre>
-<h3 id="-7">基准测试</h3>
+<h3 id="-8">基准测试</h3>
 <pre class="language-bash"><code class="language-bash">dart test/benchmark_test.dart
 </code></pre>
 <h2 id="--5">📱 平台支持</h2>
@@ -213,29 +236,79 @@ genhtml -o coverage coverage/lcov.info
 </tbody>
 </table>
 <h2 id="--6">🔧 开发</h2>
-<h3 id="-8">构建原生库</h3>
-<pre class="language-bash"><code class="language-bash"># 为所有平台构建
-flutter build ffi
-
-# 为特定平台构建
-flutter build ffi --target-platform android-arm64
+<h3 id="windows">构建Windows原生库</h3>
+<pre class="language-bash"><code class="language-bash">scripts/build_windows.bat
 </code></pre>
 <h3 id="-9">生成文档</h3>
 <pre class="language-bash"><code class="language-bash">dart doc
 </code></pre>
 <h2 id="--7">📝 示例</h2>
-<p>查看<a href="example/">example</a>目录，获取一个完整的Flutter应用，演示<code>flutter_loro_ffi</code>的使用方法。</p>
-<h2 id="--8">🔗 相关链接</h2>
+<p>查看<a href="example/">example</a>目录，获取一个完整的Flutter应用，演示<code>loro_dart</code>的使用方法。该示例包含：</p>
+<ul>
+<li>双实例实时同步演示</li>
+<li>自动/手动同步控制</li>
+<li>PeerID管理</li>
+<li>事务提交</li>
+<li>文档内容实时展示</li>
+</ul>
+<h2 id="--8">🚨 异常处理</h2>
+<h3 id="-10">异常类型</h3>
+<table>
+<thead>
+<tr>
+<th>异常类</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LoroException</code></td>
+<td>基础异常类</td>
+</tr>
+<tr>
+<td><code>LoroDocException</code></td>
+<td>文档相关异常</td>
+</tr>
+<tr>
+<td><code>LoroDisposeException</code></td>
+<td>资源已释放异常</td>
+</tr>
+<tr>
+<td><code>LoroTextException</code></td>
+<td>文本操作异常</td>
+</tr>
+<tr>
+<td><code>LoroSyncException</code></td>
+<td>同步操作异常</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-11">异常处理示例</h3>
+<pre class="language-dart"><code class="language-dart">try {
+  final doc = LoroDoc();
+  doc.insertText("Hello", 0);
+  doc.commit();
+  doc.dispose();
+  
+  // 这会抛出异常，因为文档已释放
+  doc.getText();
+} on LoroDisposeException catch (e) {
+  print("错误: ${e.message}"); // 输出: 错误: 文档已释放，无法操作
+} on LoroException catch (e) {
+  print("错误代码: ${e.code}, 信息: ${e.message}");
+}
+</code></pre>
+<h2 id="--9">🔗 相关链接</h2>
 <ul>
 <li><a href="https://github.com/loro-dev/loro.git">Loro官方仓库</a></li>
 <li><a href="https://dart.dev/guides/libraries/c-interop">FFI文档</a></li>
 <li><a href="https://flutter.dev/docs">Flutter文档</a></li>
 </ul>
-<h2 id="--9">📄 许可证</h2>
+<h2 id="--10">📄 许可证</h2>
 <p>本项目采用MIT许可证 - 详见<a href="LICENSE">LICENSE</a>文件。</p>
-<h2 id="--10">🤝 贡献</h2>
+<h2 id="--11">🤝 贡献</h2>
 <p>欢迎贡献！请随时提交Pull Request。</p>
-<h2 id="--11">📧 支持</h2>
+<h2 id="--12">📧 支持</h2>
 <p>如果您遇到任何问题或有疑问，请提交<a href="https://github.com/alexcdever/loro-dart/issues">issue</a>。</p>
 <hr>
 <p>由Loro团队用心制作 ❤️</p>
@@ -245,11 +318,18 @@ flutter build ffi --target-platform android-arm64
       <section class="summary">
           <h2>Libraries</h2>
         <dl>
-          <dt id="flutter_loro_ffi">
-  <span class="name"><a href="flutter_loro_ffi/">loro_ffi</a></span> 
+          <dt id="loro_dart">
+  <span class="name"><a href="loro_dart/">flutter_loro_ffi</a></span> 
 
 </dt>
 <dd>Flutter Loro FFI 插件主入口
+</dd>
+
+          <dt id="loro_ffi">
+  <span class="name"><a href="loro_ffi/">loro_ffi</a></span> 
+
+</dt>
+<dd>
 </dd>
 
         </dl>
@@ -263,13 +343,14 @@ flutter build ffi --target-platform android-arm64
   </form>
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
-    <li class="self-crumb">flutter_loro_ffi package</li>
+    <li><a href="https://github.com/alexcdever/loro-dart">loro_dart package</a></li>
 </ol>
 
-    <h5 class="hidden-xs"><span class="package-name">flutter_loro_ffi</span> <span class="package-kind">package</span></h5>
+    <h5 class="hidden-xs"><span class="package-name">loro_dart</span> <span class="package-kind">package</span></h5>
     <ol>
       <li class="section-title">Libraries</li>
-      <li><a href="flutter_loro_ffi/">loro_ffi</a></li>
+      <li><a href="loro_dart/">flutter_loro_ffi</a></li>
+      <li><a href="loro_ffi/">loro_ffi</a></li>
 </ol>
 
   </div>
@@ -278,7 +359,7 @@ flutter build ffi --target-platform android-arm64
 </main>
 <footer>
   <span class="no-break">
-    flutter_loro_ffi
+    loro_dart
       0.1.0
   </span>
   

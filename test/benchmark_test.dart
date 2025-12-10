@@ -1,4 +1,4 @@
-import 'package:flutter_loro_ffi/loro_ffi.dart';
+import 'package:loro_dart/loro_dart.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
 
 // 基准测试配置

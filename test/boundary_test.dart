@@ -1,4 +1,4 @@
-import 'package:flutter_loro_ffi/loro_ffi.dart';
+import 'package:loro_dart/loro_dart.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
