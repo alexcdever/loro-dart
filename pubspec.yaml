@@ -1,6 +1,6 @@
 name: loro_dart
 description: Flutter plugin for Loro FFI bindings
-version: 1.0.0
+version: 1.0.1
 
 environment:
   sdk: ">=2.17.0 <4.0.0"
