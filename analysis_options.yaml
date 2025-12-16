@@ -1,0 +1,14 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_empty_else
+    - avoid_print
+    - avoid_relative_lib_imports
+    - avoid_types_as_parameter_names
+    - camel_case_types
+    - empty_catches
+    - prefer_const_constructors
+    - prefer_const_literals_to_create_immutables
+    - unnecessary_brace_in_string_interps

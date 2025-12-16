@@ -1,0 +1,24 @@
+[package]
+name = "loro_dart"
+version = "1.0.0"
+edition = "2021"
+description = "Flutter bindings for Loro CRDT using flutter_rust_bridge"
+authors = ["loro-dart contributors"]
+license = "MIT"
+repository = "https://github.com/alexcdever/loro-dart"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+name = "loro_dart"
+
+[dependencies]
+# Loro 核心库 - 直接依赖
+loro = { version = "1.0", features = ["counter"] }
+
+# flutter_rust_bridge 运行时
+flutter_rust_bridge = "=2.11.1"
+lazy_static = "1"
+
+# 序列化支持
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

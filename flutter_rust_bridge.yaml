@@ -1,0 +1,11 @@
+# flutter_rust_bridge 配置文件
+# https://cjycode.com/flutter_rust_bridge/
+
+# Rust 输入
+rust_input: crate::api
+rust_root: rust/
+# Dart 输出
+dart_output: lib/src/bridge_generated.dart
+
+# C 输出（供 FFI 使用）
+c_output: lib/src/bridge_generated.h

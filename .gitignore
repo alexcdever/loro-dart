@@ -37,10 +37,13 @@ native/rust/Cargo.lock
 
 # Windows
 *.exe
-*.dll
-*.lib
 *.ilk
 *.pdb
+# Allow DLL files in release directory
+!release/**/*.dll
+!release/**/*.lib
+!release/**/*.so
+!release/**/*.dylib
 
 # Android
 *.apk

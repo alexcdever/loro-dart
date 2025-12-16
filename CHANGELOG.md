@@ -1,30 +1,37 @@
-## 1.0.1
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.0] - 2025-12-16
+
+### Added
+- Initial release of loro_dart
+- Complete FFI bindings for Loro CRDT
+- Support for all major platforms (Android, iOS, Windows, Linux, macOS)
+- Text, List, Map, Tree, Counter, and MovableList containers
+- Document import/export functionality
+- Event subscription system
+- Undo/Redo manager
+- Comprehensive examples and documentation
 
 ### Features
-* 更新了 loro-ffi 到 v1.10.3
-* 修复了一些内部问题
-* 优化了构建脚本
-* 完善了文档
+- High-performance CRDT operations
+- Real-time collaboration support
+- Type-safe Dart API
+- Automatic resource management
+- Cross-platform compatibility
 
-## 1.0.0
+## [Unreleased]
 
-### Breaking Changes
-* 移除了 `lib/loro_ffi.dart` 向后兼容文件
-* 移除了 `lib/flutter_loro_ffi.dart` 向后兼容文件
-* 所有导入路径现在必须使用 `package:loro_dart/loro_dart.dart`
+### Planned
+- Additional example applications
+- Performance benchmarks
+- Extended documentation
+- Integration guides
 
-### Features
-* 保持所有现有功能不变
-* 简化了库结构，移除了不必要的兼容层
-* 更新了 ffi 依赖约束为 ^2.0.2
+---
 
-## 0.1.0
-
-* 初始发布
-* 支持基本的CRDT文档操作
-* 支持文本插入和删除
-* 支持文档同步
-* 支持跨平台（Android、iOS、Windows、macOS、Linux）
-* 提供完整的API文档
-* 包含示例应用
-* 支持性能基准测试
+[1.0.0]: https://github.com/alexcdever/loro-dart/releases/tag/v1.0.0

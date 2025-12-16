@@ -1,0 +1,1 @@
+{"rustc":2490638836439573635,"features":"[]","declared_features":"[\"nightly\"]","target":3068380888435669025,"profile":2241668132362809309,"path":724011431158039948,"deps":[],"local":[{"CheckDepInfo":{"dep_info":"debug\\.fingerprint\\leb128-b0c7816c99981e29\\dep-lib-leb128","checksum":false}}],"rustflags":["--cfg","frb_expand"],"config":2069994364910194474,"compile_kind":0}

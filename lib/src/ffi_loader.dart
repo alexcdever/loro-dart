@@ -1,23 +1,42 @@
-import 'dart:ffi';
+import 'dart:ffi' as ffi;
 import 'dart:io' show Platform;
 
-/// 多平台动态库加载器
-/// 根据不同平台加载对应的本地库文件
-DynamicLibrary _loadLibrary() {
+/// Loads the native loro_dart library.
+///
+/// This function handles platform-specific library loading for:
+/// - Android: libloro_dart.so
+/// - iOS: loro_dart.framework
+/// - Windows: loro_dart.dll
+/// - Linux: libloro_dart.so
+/// - macOS: libloro_dart.dylib
+ffi.DynamicLibrary loadLoroLibrary() {
   if (Platform.isAndroid) {
-    return DynamicLibrary.open('libloro_ffi.so');
+    return ffi.DynamicLibrary.open('libloro_dart.so');
   } else if (Platform.isIOS) {
-    return DynamicLibrary.process();
+    return ffi.DynamicLibrary.process();
   } else if (Platform.isWindows) {
-    return DynamicLibrary.open('loro_ffi.dll');
-  } else if (Platform.isMacOS) {
-    return DynamicLibrary.open('libloro_ffi.dylib');
+    return ffi.DynamicLibrary.open('loro_dart.dll');
   } else if (Platform.isLinux) {
-    return DynamicLibrary.open('libloro_ffi.so');
+    return ffi.DynamicLibrary.open('libloro_dart.so');
+  } else if (Platform.isMacOS) {
+    return ffi.DynamicLibrary.open('libloro_dart.dylib');
+  } else {
+    throw UnsupportedError(
+        'Platform ${Platform.operatingSystem} is not supported');
   }
-  throw UnsupportedError('不支持的平台: ${Platform.operatingSystem}');
 }
 
-/// 全局动态库实例
-/// 用于所有FFI函数的查找和调用
-final DynamicLibrary loroFFILib = _loadLibrary();
+/// Initialize the Loro library.
+///
+/// This should be called before using any Loro functionality.
+/// Returns true if initialization was successful.
+bool initializeLoro() {
+  try {
+    final lib = loadLoroLibrary();
+    // Perform any necessary initialization
+    return true;
+  } catch (e) {
+    print('Failed to initialize Loro library: $e');
+    return false;
+  }
+}
