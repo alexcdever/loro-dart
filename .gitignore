@@ -32,8 +32,12 @@ logs/
 coverage/
 
 # Rust
-native/rust/target/
-native/rust/Cargo.lock
+rust/target/
+runtime/
+rust/Cargo.lock
+
+# Claude AI
+.claude/
 
 # Windows
 *.exe
