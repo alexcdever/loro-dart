@@ -1,9 +1,0 @@
-D:\Projects\loro-dart\rust\target\aarch64-linux-android\release\deps\append_only_bytes-39e05b3307a0763d.d: C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\lib.rs C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\raw_bytes.rs C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\../README.md
-
-D:\Projects\loro-dart\rust\target\aarch64-linux-android\release\deps\libappend_only_bytes-39e05b3307a0763d.rlib: C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\lib.rs C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\raw_bytes.rs C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\../README.md
-
-D:\Projects\loro-dart\rust\target\aarch64-linux-android\release\deps\libappend_only_bytes-39e05b3307a0763d.rmeta: C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\lib.rs C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\raw_bytes.rs C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\../README.md
-
-C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\lib.rs:
-C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\raw_bytes.rs:
-C:\Users\alexc\scoop\persist\rustup\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\append-only-bytes-0.1.12\src\../README.md:

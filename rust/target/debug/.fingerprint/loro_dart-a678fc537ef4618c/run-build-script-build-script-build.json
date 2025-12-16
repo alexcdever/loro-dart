@@ -1,1 +1,0 @@
-{"rustc":2490638836439573635,"features":"","declared_features":"","target":0,"profile":0,"path":0,"deps":[[17038419617383035583,"build_script_build",false,1733702445613351108]],"local":[{"RerunIfChanged":{"output":"debug\\build\\loro_dart-a678fc537ef4618c\\output","paths":["src/api.rs"]}}],"rustflags":["--cfg","frb_expand"],"config":0,"compile_kind":0}
