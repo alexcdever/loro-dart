@@ -15,7 +15,7 @@ void main(List<String> arguments) async {
   final results = parser.parse(arguments);
   final platform = results['platform'] as String;
 
-  print('🔨 Building loro_dart for platform: $platform');
+  stdout.write('🔨 Building loro_dart for platform: $platform\n');
 
   final projectRoot = Directory.current.path;
   final rustDir = path.join(projectRoot, 'rust');
@@ -28,7 +28,7 @@ void main(List<String> arguments) async {
     await buildAndroid(rustDir);
   }
   if (platform == 'ios') {
-    print('⚠️ iOS 构建只能在 macOS 上进行，跳过...');
+    stdout.write('⚠️ iOS 构建只能在 macOS 上进行，跳过...\n');
   }
   if ((platform == 'all' && currentPlatform == 'windows') ||
       platform == 'windows') {
@@ -38,14 +38,14 @@ void main(List<String> arguments) async {
     await buildLinux(rustDir);
   }
   if (platform == 'macos') {
-    print('⚠️ macOS 构建只能在 macOS 上进行，跳过...');
+    stdout.write('⚠️ macOS 构建只能在 macOS 上进行，跳过...\n');
   }
 
-  print('✅ Build completed successfully!');
+  stdout.write('✅ Build completed successfully!\n');
 }
 
 Future<void> buildAndroid(String rustDir) async {
-  print('📱 Building for Android...');
+  stdout.write('📱 Building for Android...\n');
 
   // 获取NDK路径
   final ndkPath = Platform.environment['ANDROID_NDK_ROOT'] ??
@@ -54,22 +54,22 @@ Future<void> buildAndroid(String rustDir) async {
   // 检查NDK路径是否存在
   final ndkDir = Directory(ndkPath);
   if (!ndkDir.existsSync()) {
-    print('⚠️ NDK path not found: $ndkPath');
-    print(
-        'Please set ANDROID_NDK_ROOT environment variable to the correct NDK path.');
-    print('You can install NDK via Android Studio SDK Manager.');
+    stderr.write('⚠️ NDK path not found: $ndkPath\n');
+    stderr.write(
+        'Please set ANDROID_NDK_ROOT environment variable to the correct NDK path.\n');
+    stderr.write('You can install NDK via Android Studio SDK Manager.\n');
     return;
   }
 
   // 查找最新版本的NDK
   final ndkVersions = ndkDir
       .listSync()
-      .where((entity) => entity is Directory)
+      .whereType<Directory>()
       .map((entity) => entity.path)
       .toList();
 
   if (ndkVersions.isEmpty) {
-    print('⚠️ No NDK versions found in $ndkPath');
+    stderr.write('⚠️ No NDK versions found in $ndkPath\n');
     return;
   }
 
@@ -77,7 +77,7 @@ Future<void> buildAndroid(String rustDir) async {
   final latestNdkVersion = ndkVersions.last;
   final ndkRoot = Directory(latestNdkVersion);
 
-  print('📌 Using NDK at: $ndkRoot');
+  stdout.write('📌 Using NDK at: $ndkRoot\n');
 
   final targets = [
     'aarch64-linux-android',
@@ -100,7 +100,7 @@ Future<void> buildAndroid(String rustDir) async {
   env['ANDROID_NDK_HOME'] = ndkRoot.path;
 
   for (final target in targets) {
-    print('  Building for $target...');
+    stdout.write('  Building for $target...\n');
 
     final result = await Process.run(
       'cargo',
@@ -110,8 +110,8 @@ Future<void> buildAndroid(String rustDir) async {
     );
 
     if (result.exitCode != 0) {
-      print('⚠️ Failed to build for $target, skipping...');
-      print('Error: ${result.stderr}');
+      stderr.write('⚠️ Failed to build for $target, skipping...\n');
+      stderr.write('Error: ${result.stderr}\n');
       continue;
     }
 
@@ -138,22 +138,22 @@ Future<void> buildAndroid(String rustDir) async {
     final libDest = path.join(outputDir, 'libloro_dart.so');
 
     await File(libSource).copy(libDest);
-    print('  ✓ Copied to $libDest');
+    stdout.write('  ✓ Copied to $libDest\n');
     anySuccess = true;
   }
 
   if (!anySuccess) {
-    print(
-        '⚠️ All Android targets failed to build. Please make sure you have Android NDK installed and configured.');
-    print('You can install NDK via Android Studio SDK Manager.');
+    stderr.write(
+        '⚠️ All Android targets failed to build. Please make sure you have Android NDK installed and configured.\n');
+    stderr.write('You can install NDK via Android Studio SDK Manager.\n');
   }
 }
 
 Future<void> buildIOS(String rustDir) async {
-  print('🍎 Building for iOS...');
+  stdout.write('🍎 Building for iOS...\n');
 
   // Build for iOS device (arm64)
-  print('  Building for iOS device (arm64)...');
+  stdout.write('  Building for iOS device (arm64)...\n');
   var result = await Process.run(
     'cargo',
     ['build', '--release', '--target', 'aarch64-apple-ios'],
@@ -161,13 +161,13 @@ Future<void> buildIOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ Failed to build for iOS device');
-    print(result.stderr);
+    stderr.write('❌ Failed to build for iOS device\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
   // Build for iOS simulator (x86_64 and arm64)
-  print('  Building for iOS simulator...');
+  stdout.write('  Building for iOS simulator...\n');
   result = await Process.run(
     'cargo',
     ['build', '--release', '--target', 'x86_64-apple-ios'],
@@ -175,11 +175,12 @@ Future<void> buildIOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ Failed to build for iOS simulator (x86_64)');
-    print(result.stderr);
+    stderr.write('❌ Failed to build for iOS simulator (x86_64)\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
+  stdout.write('  Building for iOS simulator (arm64)...\n');
   result = await Process.run(
     'cargo',
     ['build', '--release', '--target', 'aarch64-apple-ios-sim'],
@@ -187,13 +188,13 @@ Future<void> buildIOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ Failed to build for iOS simulator (arm64)');
-    print(result.stderr);
+    stderr.write('❌ Failed to build for iOS simulator (arm64)\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
   // Create XCFramework
-  print('  Creating XCFramework...');
+  stdout.write('  Creating XCFramework...\n');
   final outputDir = path.join(Directory.current.path, 'ios');
   await Directory(outputDir).create(recursive: true);
 
@@ -213,14 +214,14 @@ Future<void> buildIOS(String rustDir) async {
   ]);
 
   if (result.exitCode != 0) {
-    print('⚠️ Failed to create universal simulator binary, skipping...');
+    stderr.write('⚠️ Failed to create universal simulator binary, skipping...\n');
   } else {
-    print('  ✓ Created iOS universal library');
+    stdout.write('  ✓ Created iOS universal library\n');
   }
 }
 
 Future<void> buildWindows(String rustDir) async {
-  print('🪟 Building for Windows...');
+  stdout.write('🪟 Building for Windows...\n');
 
   final result = await Process.run(
     'cargo',
@@ -229,8 +230,8 @@ Future<void> buildWindows(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ Failed to build for Windows');
-    print(result.stderr);
+    stderr.write('❌ Failed to build for Windows\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
@@ -247,11 +248,11 @@ Future<void> buildWindows(String rustDir) async {
   final libDest = path.join(outputDir, 'loro_dart.dll');
 
   await File(libSource).copy(libDest);
-  print('  ✓ Copied to $libDest');
+  stdout.write('  ✓ Copied to $libDest\n');
 }
 
 Future<void> buildLinux(String rustDir) async {
-  print('🐧 Building for Linux...');
+  stdout.write('🐧 Building for Linux...\n');
 
   final result = await Process.run(
     'cargo',
@@ -260,8 +261,8 @@ Future<void> buildLinux(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ Failed to build for Linux');
-    print(result.stderr);
+    stderr.write('❌ Failed to build for Linux\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
@@ -278,14 +279,14 @@ Future<void> buildLinux(String rustDir) async {
   final libDest = path.join(outputDir, 'libloro_dart.so');
 
   await File(libSource).copy(libDest);
-  print('  ✓ Copied to $libDest');
+  stdout.write('  ✓ Copied to $libDest\n');
 }
 
 Future<void> buildMacOS(String rustDir) async {
-  print('🍎 Building for macOS...');
+  stdout.write('🍎 Building for macOS...\n');
 
   // Build for both x86_64 and arm64
-  print('  Building for x86_64...');
+  stdout.write('  Building for x86_64...\n');
   var result = await Process.run(
     'cargo',
     ['build', '--release', '--target', 'x86_64-apple-darwin'],
@@ -293,12 +294,12 @@ Future<void> buildMacOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ Failed to build for macOS x86_64');
-    print(result.stderr);
+    stderr.write('❌ Failed to build for macOS x86_64\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
-  print('  Building for arm64...');
+  stdout.write('  Building for arm64...\n');
   result = await Process.run(
     'cargo',
     ['build', '--release', '--target', 'aarch64-apple-darwin'],
@@ -306,13 +307,13 @@ Future<void> buildMacOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ Failed to build for macOS arm64');
-    print(result.stderr);
+    stderr.write('❌ Failed to build for macOS arm64\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
   // Create universal binary
-  print('  Creating universal binary...');
+  stdout.write('  Creating universal binary...\n');
   final outputDir = path.join(Directory.current.path, 'macos');
   await Directory(outputDir).create(recursive: true);
 
@@ -329,10 +330,10 @@ Future<void> buildMacOS(String rustDir) async {
   ]);
 
   if (result.exitCode != 0) {
-    print('❌ Failed to create universal binary');
-    print(result.stderr);
+    stderr.write('❌ Failed to create universal binary\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
-  print('  ✓ Created universal binary at $universalLib');
+  stdout.write('  ✓ Created universal binary at $universalLib\n');
 }
