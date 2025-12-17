@@ -1,9 +1,9 @@
 import 'dart:ffi' as ffi;
 import 'dart:io' show Platform;
 
-/// Loads the native loro_dart library.
+/// 加载原生 loro_dart 库。
 ///
-/// This function handles platform-specific library loading for:
+/// 该函数处理平台特定的库加载：
 /// - Android: libloro_dart.so
 /// - iOS: loro_dart.framework
 /// - Windows: loro_dart.dll
@@ -21,24 +21,23 @@ ffi.DynamicLibrary loadLoroLibrary() {
   } else if (Platform.isMacOS) {
     return ffi.DynamicLibrary.open('libloro_dart.dylib');
   } else {
-    throw UnsupportedError(
-        'Platform ${Platform.operatingSystem} is not supported');
+    throw UnsupportedError('平台 ${Platform.operatingSystem} 不支持');
   }
 }
 
-/// Initialize the Loro library.
+/// 初始化 Loro 库。
 ///
-/// This should be called before using any Loro functionality.
-/// Returns true if initialization was successful.
+/// 在使用任何 Loro 功能之前，应调用此函数。
+/// 如果初始化成功，返回 true。
 bool initializeLoro() {
   try {
     loadLoroLibrary();
-    // Perform any necessary initialization
+    // 执行必要的初始化操作
     return true;
   } catch (e) {
-    // This is just a debug print, not production code
+    // 这只是一个调试打印，不是生产代码
     // ignore: avoid_print
-    print('Failed to initialize Loro library: $e');
+    print('初始化 Loro 库失败: $e');
     return false;
   }
 }

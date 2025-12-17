@@ -1,30 +1,30 @@
-/// Loro Dart - Flutter bindings for Loro CRDT
+/// Loro Dart - Loro CRDT 的 Flutter 绑定
 ///
-/// This library provides Flutter/Dart bindings for the Loro CRDT framework
-/// using flutter_rust_bridge for seamless Rust-Dart integration.
+/// 该库提供了 Loro CRDT 框架的 Flutter/Dart 绑定，
+/// 使用 flutter_rust_bridge 实现无缝的 Rust-Dart 集成。
 ///
-/// Example usage:
+/// 使用示例：
 /// ```dart
 /// import 'package:loro_dart/loro_dart.dart';
 ///
 /// void main() {
-///   // Create a new Loro document
+///   // 创建一个新的 Loro 文档
 ///   final doc = LoroDoc.newDoc();
 ///
-///   // Work with text
+///   // 使用文本
 ///   final text = doc.getText('text');
-///   text.insert(0, 'Hello, Loro!');
+///   text.insert(0, '你好，Loro!');
 ///   print(text.toString());
 ///
-///   // Work with maps
+///   // 使用映射
 ///   final map = doc.getMap('map');
 ///   map.insertString('key', 'value');
 ///
-///   // Work with lists
+///   // 使用列表
 ///   final list = doc.getList('list');
 ///   list.insertString(0, 'item1');
 ///
-///   // Export and import
+///   // 导出和导入
 ///   final snapshot = doc.exportSnapshot();
 ///   final doc2 = LoroDoc.newDoc();
 ///   doc2.import(snapshot);
@@ -34,6 +34,6 @@
 /// ```
 library loro_dart;
 
-// Export bridge generated code
+// 导出桥接生成的代码
 export 'src/api.dart';
 export 'src/frb_generated.dart';
