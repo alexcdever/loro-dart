@@ -55,9 +55,9 @@ Future<void> buildAndroid(String rustDir) async {
     // 获取 NDK 路径
     final ndkPath = Platform.environment['ANDROID_NDK_ROOT'] ??
         (Platform.isWindows
-            ? 'C:\\Users\\$Platform.environment['USERNAME']\\AppData\\Local\\Android\\Sdk\\ndk'
+            ? 'C:\\Users\\${Platform.environment['USERNAME']}\\AppData\\Local\\Android\\Sdk\\ndk'
             : Platform.isMacOS
-                ? '$Platform.environment['HOME']/Library/Android/sdk/ndk'
+                ? '${Platform.environment['HOME']}/Library/Android/sdk/ndk'
                 : '/usr/local/lib/android/sdk/ndk');
 
     // 检查 NDK 路径是否存在
