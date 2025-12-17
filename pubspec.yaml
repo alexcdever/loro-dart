@@ -1,6 +1,6 @@
 name: loro_dart
 description: Dart bindings for Loro CRDT - A high-performance CRDT framework for building local-first applications
-version: 1.0.0
+version: 1.0.2
 homepage: https://github.com/alexcdever/loro-dart
 repository: https://github.com/alexcdever/loro-dart
 issue_tracker: https://github.com/alexcdever/loro-dart/issues
