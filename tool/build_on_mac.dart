@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 
 void main() async {
-  print('🔧 使用 flutter_rust_bridge 生成 Dart 绑定...\n');
+  stdout.write('🔧 使用 flutter_rust_bridge 生成 Dart 绑定...\n\n');
 
   final projectRoot = Directory.current.path;
   final rustDir = path.join(projectRoot, 'rust');
@@ -13,14 +13,14 @@ void main() async {
   await generateFrbBindings(projectRoot, rustDir);
 
   // 2. 构建动态库
-  print('\n🔨 开始构建动态库...\n');
+  stdout.write('\n🔨 开始构建动态库...\n\n');
 
   // macOS 上可以构建 Android、iOS 和 macOS
   await buildAndroid(rustDir);
   await buildIOS(rustDir);
   await buildMacOS(rustDir);
 
-  print('\n✅ 所有构建完成！');
+  stdout.write('\n✅ 所有构建完成！\n');
 }
 
 /// 生成 flutter_rust_bridge 绑定
@@ -33,20 +33,20 @@ Future<void> generateFrbBindings(String projectRoot, String rustDir) async {
   );
 
   // 输出结果
-  print(result.stdout);
+  stdout.write(result.stdout);
   if (result.stderr.isNotEmpty) {
-    print(result.stderr);
+    stderr.write(result.stderr);
   }
 
   if (result.exitCode != 0) {
-    print('❌ 生成绑定失败');
+    stderr.write('❌ 生成绑定失败\n');
     exit(1);
   }
 }
 
 /// 构建 Android 动态库
 Future<void> buildAndroid(String rustDir) async {
-  print('📱 构建 Android 动态库...');
+  stdout.write('📱 构建 Android 动态库...\n');
 
   // 获取 NDK 路径
   final ndkPath = Platform.environment['ANDROID_NDK_ROOT'] ??
@@ -56,9 +56,9 @@ Future<void> buildAndroid(String rustDir) async {
   // 检查 NDK 路径是否存在
   final ndkDir = Directory(ndkPath);
   if (!ndkDir.existsSync()) {
-    print('⚠️ NDK 路径不存在: $ndkPath');
-    print('请设置 ANDROID_NDK_ROOT 或 ANDROID_NDK_HOME 环境变量到正确的 NDK 路径。');
-    print('你可以通过 Android Studio SDK Manager 安装 NDK。');
+    stderr.write('⚠️ NDK 路径不存在: $ndkPath\n');
+    stderr.write('请设置 ANDROID_NDK_ROOT 或 ANDROID_NDK_HOME 环境变量到正确的 NDK 路径。\n');
+    stderr.write('你可以通过 Android Studio SDK Manager 安装 NDK。\n');
     return;
   }
 
@@ -70,7 +70,7 @@ Future<void> buildAndroid(String rustDir) async {
       .toList();
 
   if (ndkVersions.isEmpty) {
-    print('⚠️ 在 $ndkPath 中未找到 NDK 版本');
+    stderr.write('⚠️ 在 $ndkPath 中未找到 NDK 版本\n');
     return;
   }
 
@@ -78,7 +78,7 @@ Future<void> buildAndroid(String rustDir) async {
   final latestNdkVersion = ndkVersions.last;
   final ndkRoot = Directory(latestNdkVersion);
 
-  print('📌 使用 NDK: $ndkRoot');
+  stdout.write('📌 使用 NDK: $ndkRoot\n');
 
   final targets = [
     'aarch64-linux-android',
@@ -101,7 +101,7 @@ Future<void> buildAndroid(String rustDir) async {
   env['ANDROID_NDK_HOME'] = ndkRoot.path;
 
   for (final target in targets) {
-    print('  构建 $target...');
+    stdout.write('  构建 $target...\n');
 
     final result = await Process.run(
       'cargo',
@@ -111,8 +111,8 @@ Future<void> buildAndroid(String rustDir) async {
     );
 
     if (result.exitCode != 0) {
-      print('⚠️ 构建 $target 失败，跳过...');
-      print('错误: ${result.stderr}');
+      stderr.write('⚠️ 构建 $target 失败，跳过...\n');
+      stderr.write('错误: ${result.stderr}\n');
       continue;
     }
 
@@ -139,22 +139,22 @@ Future<void> buildAndroid(String rustDir) async {
     final libDest = path.join(outputDir, 'libloro_dart.so');
 
     await File(libSource).copy(libDest);
-    print('  ✓ 复制到 $libDest');
+    stdout.write('  ✓ 复制到 $libDest\n');
     anySuccess = true;
   }
 
   if (!anySuccess) {
-    print('⚠️ 所有 Android 目标构建失败。请确保你已安装并配置了 Android NDK。');
-    print('你可以通过 Android Studio SDK Manager 安装 NDK。');
+    stderr.write('⚠️ 所有 Android 目标构建失败。请确保你已安装并配置了 Android NDK。\n');
+    stderr.write('你可以通过 Android Studio SDK Manager 安装 NDK。\n');
   }
 }
 
 /// 构建 iOS 动态库
 Future<void> buildIOS(String rustDir) async {
-  print('🍎 构建 iOS 动态库...');
+  stdout.write('🍎 构建 iOS 动态库...\n');
 
   // Build for iOS device (arm64)
-  print('  构建 iOS 设备 (arm64)...');
+  stdout.write('  构建 iOS 设备 (arm64)...\n');
   var result = await Process.run(
     'cargo',
     ['build', '--release', '--target', 'aarch64-apple-ios'],
@@ -162,13 +162,13 @@ Future<void> buildIOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ 构建 iOS 设备失败');
-    print(result.stderr);
+    stderr.write('❌ 构建 iOS 设备失败\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
   // Build for iOS simulator (x86_64 and arm64)
-  print('  构建 iOS 模拟器...');
+  stdout.write('  构建 iOS 模拟器...\n');
   result = await Process.run(
     'cargo',
     ['build', '--release', '--target', 'x86_64-apple-ios'],
@@ -176,8 +176,8 @@ Future<void> buildIOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ 构建 iOS 模拟器 (x86_64) 失败');
-    print(result.stderr);
+    stderr.write('❌ 构建 iOS 模拟器 (x86_64) 失败\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
@@ -188,13 +188,13 @@ Future<void> buildIOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ 构建 iOS 模拟器 (arm64) 失败');
-    print(result.stderr);
+    stderr.write('❌ 构建 iOS 模拟器 (arm64) 失败\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
   // Create XCFramework
-  print('  创建 XCFramework...');
+  stdout.write('  创建 XCFramework...\n');
   final outputDir = path.join(Directory.current.path, 'ios');
   await Directory(outputDir).create(recursive: true);
 
@@ -214,18 +214,18 @@ Future<void> buildIOS(String rustDir) async {
   ]);
 
   if (result.exitCode != 0) {
-    print('⚠️ 创建模拟器通用二进制文件失败，跳过...');
+    stderr.write('⚠️ 创建模拟器通用二进制文件失败，跳过...\n');
   } else {
-    print('  ✓ 创建了 iOS 通用库');
+    stdout.write('  ✓ 创建了 iOS 通用库\n');
   }
 }
 
 /// 构建 macOS 动态库
 Future<void> buildMacOS(String rustDir) async {
-  print('🍎 构建 macOS 动态库...');
+  stdout.write('🍎 构建 macOS 动态库...\n');
 
   // Build for both x86_64 and arm64
-  print('  构建 x86_64...');
+  stdout.write('  构建 x86_64...\n');
   var result = await Process.run(
     'cargo',
     ['build', '--release', '--target', 'x86_64-apple-darwin'],
@@ -233,12 +233,12 @@ Future<void> buildMacOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ 构建 macOS x86_64 失败');
-    print(result.stderr);
+    stderr.write('❌ 构建 macOS x86_64 失败\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
-  print('  构建 arm64...');
+  stdout.write('  构建 arm64...\n');
   result = await Process.run(
     'cargo',
     ['build', '--release', '--target', 'aarch64-apple-darwin'],
@@ -246,13 +246,13 @@ Future<void> buildMacOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    print('❌ 构建 macOS arm64 失败');
-    print(result.stderr);
+    stderr.write('❌ 构建 macOS arm64 失败\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
   // Create universal binary
-  print('  创建通用二进制文件...');
+  stdout.write('  创建通用二进制文件...\n');
   final outputDir = path.join(Directory.current.path, 'macos');
   await Directory(outputDir).create(recursive: true);
 
@@ -269,10 +269,10 @@ Future<void> buildMacOS(String rustDir) async {
   ]);
 
   if (result.exitCode != 0) {
-    print('❌ 创建通用二进制文件失败');
-    print(result.stderr);
+    stderr.write('❌ 创建通用二进制文件失败\n');
+    stderr.write(result.stderr);
     exit(1);
   }
 
-  print('  ✓ 在 $universalLib 创建了通用二进制文件');
+  stdout.write('  ✓ 在 $universalLib 创建了通用二进制文件\n');
 }
