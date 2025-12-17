@@ -32,10 +32,12 @@ ffi.DynamicLibrary loadLoroLibrary() {
 /// Returns true if initialization was successful.
 bool initializeLoro() {
   try {
-    final lib = loadLoroLibrary();
+    loadLoroLibrary();
     // Perform any necessary initialization
     return true;
   } catch (e) {
+    // This is just a debug print, not production code
+    // ignore: avoid_print
     print('Failed to initialize Loro library: $e');
     return false;
   }

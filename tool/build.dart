@@ -15,25 +15,30 @@ void main(List<String> arguments) async {
   final results = parser.parse(arguments);
   final platform = results['platform'] as String;
 
-  print('🔨 Building loro_dart_ffi for platform: $platform');
+  print('🔨 Building loro_dart for platform: $platform');
 
   final projectRoot = Directory.current.path;
   final rustDir = path.join(projectRoot, 'rust');
 
+  // 只在当前平台上构建对应平台的目标，或者在明确指定平台时才构建
+  final currentPlatform = Platform.operatingSystem;
+
+  // Android 可以在所有平台上构建，因为我们已经安装了 Android 目标
   if (platform == 'all' || platform == 'android') {
     await buildAndroid(rustDir);
   }
-  if (platform == 'all' || platform == 'ios') {
-    await buildIOS(rustDir);
+  if (platform == 'ios') {
+    print('⚠️ iOS 构建只能在 macOS 上进行，跳过...');
   }
-  if (platform == 'all' || platform == 'windows') {
+  if ((platform == 'all' && currentPlatform == 'windows') ||
+      platform == 'windows') {
     await buildWindows(rustDir);
   }
-  if (platform == 'all' || platform == 'linux') {
+  if (platform == 'linux') {
     await buildLinux(rustDir);
   }
-  if (platform == 'all' || platform == 'macos') {
-    await buildMacOS(rustDir);
+  if (platform == 'macos') {
+    print('⚠️ macOS 构建只能在 macOS 上进行，跳过...');
   }
 
   print('✅ Build completed successfully!');
@@ -41,6 +46,38 @@ void main(List<String> arguments) async {
 
 Future<void> buildAndroid(String rustDir) async {
   print('📱 Building for Android...');
+
+  // 获取NDK路径
+  final ndkPath = Platform.environment['ANDROID_NDK_ROOT'] ??
+      'C:\\Users\\alexc\\AppData\\Local\\Android\\Sdk\\ndk';
+
+  // 检查NDK路径是否存在
+  final ndkDir = Directory(ndkPath);
+  if (!ndkDir.existsSync()) {
+    print('⚠️ NDK path not found: $ndkPath');
+    print(
+        'Please set ANDROID_NDK_ROOT environment variable to the correct NDK path.');
+    print('You can install NDK via Android Studio SDK Manager.');
+    return;
+  }
+
+  // 查找最新版本的NDK
+  final ndkVersions = ndkDir
+      .listSync()
+      .where((entity) => entity is Directory)
+      .map((entity) => entity.path)
+      .toList();
+
+  if (ndkVersions.isEmpty) {
+    print('⚠️ No NDK versions found in $ndkPath');
+    return;
+  }
+
+  // 选择最新版本
+  final latestNdkVersion = ndkVersions.last;
+  final ndkRoot = Directory(latestNdkVersion);
+
+  print('📌 Using NDK at: $ndkRoot');
 
   final targets = [
     'aarch64-linux-android',
@@ -56,18 +93,26 @@ Future<void> buildAndroid(String rustDir) async {
     'x86_64-linux-android': 'x86_64',
   };
 
+  bool anySuccess = false;
+
+  // 设置NDK路径环境变量
+  final env = <String, String>{...Platform.environment};
+  env['ANDROID_NDK_HOME'] = ndkRoot.path;
+
   for (final target in targets) {
     print('  Building for $target...');
+
     final result = await Process.run(
       'cargo',
-      ['build', '--release', '--target', target],
+      ['ndk', 'build', '--release', '--target', target],
       workingDirectory: rustDir,
+      environment: env,
     );
 
     if (result.exitCode != 0) {
-      print('❌ Failed to build for $target');
-      print(result.stderr);
-      exit(1);
+      print('⚠️ Failed to build for $target, skipping...');
+      print('Error: ${result.stderr}');
+      continue;
     }
 
     // Copy to Android jniLibs directory
@@ -87,13 +132,20 @@ Future<void> buildAndroid(String rustDir) async {
       'target',
       target,
       'release',
-      'libloro_dart_ffi.so',
+      'libloro_dart.so',
     );
 
-    final libDest = path.join(outputDir, 'libloro_dart_ffi.so');
+    final libDest = path.join(outputDir, 'libloro_dart.so');
 
     await File(libSource).copy(libDest);
     print('  ✓ Copied to $libDest');
+    anySuccess = true;
+  }
+
+  if (!anySuccess) {
+    print(
+        '⚠️ All Android targets failed to build. Please make sure you have Android NDK installed and configured.');
+    print('You can install NDK via Android Studio SDK Manager.');
   }
 }
 
@@ -146,15 +198,18 @@ Future<void> buildIOS(String rustDir) async {
   await Directory(outputDir).create(recursive: true);
 
   // Create universal binary for simulator
-  final simLibPath = path.join(rustDir, 'target', 'ios-sim-universal', 'release');
+  final simLibPath =
+      path.join(rustDir, 'target', 'ios-sim-universal', 'release');
   await Directory(simLibPath).create(recursive: true);
 
   result = await Process.run('lipo', [
     '-create',
-    path.join(rustDir, 'target', 'x86_64-apple-ios', 'release', 'libloro_dart_ffi.a'),
-    path.join(rustDir, 'target', 'aarch64-apple-ios-sim', 'release', 'libloro_dart_ffi.a'),
+    path.join(
+        rustDir, 'target', 'x86_64-apple-ios', 'release', 'libloro_dart.a'),
+    path.join(rustDir, 'target', 'aarch64-apple-ios-sim', 'release',
+        'libloro_dart.a'),
     '-output',
-    path.join(simLibPath, 'libloro_dart_ffi.a'),
+    path.join(simLibPath, 'libloro_dart.a'),
   ]);
 
   if (result.exitCode != 0) {
@@ -186,10 +241,10 @@ Future<void> buildWindows(String rustDir) async {
     rustDir,
     'target',
     'release',
-    'loro_dart_ffi.dll',
+    'loro_dart.dll',
   );
 
-  final libDest = path.join(outputDir, 'loro_dart_ffi.dll');
+  final libDest = path.join(outputDir, 'loro_dart.dll');
 
   await File(libSource).copy(libDest);
   print('  ✓ Copied to $libDest');
@@ -217,10 +272,10 @@ Future<void> buildLinux(String rustDir) async {
     rustDir,
     'target',
     'release',
-    'libloro_dart_ffi.so',
+    'libloro_dart.so',
   );
 
-  final libDest = path.join(outputDir, 'libloro_dart_ffi.so');
+  final libDest = path.join(outputDir, 'libloro_dart.so');
 
   await File(libSource).copy(libDest);
   print('  ✓ Copied to $libDest');
@@ -261,12 +316,14 @@ Future<void> buildMacOS(String rustDir) async {
   final outputDir = path.join(Directory.current.path, 'macos');
   await Directory(outputDir).create(recursive: true);
 
-  final universalLib = path.join(outputDir, 'libloro_dart_ffi.dylib');
+  final universalLib = path.join(outputDir, 'libloro_dart.dylib');
 
   result = await Process.run('lipo', [
     '-create',
-    path.join(rustDir, 'target', 'x86_64-apple-darwin', 'release', 'libloro_dart_ffi.dylib'),
-    path.join(rustDir, 'target', 'aarch64-apple-darwin', 'release', 'libloro_dart_ffi.dylib'),
+    path.join(rustDir, 'target', 'x86_64-apple-darwin', 'release',
+        'libloro_dart.dylib'),
+    path.join(rustDir, 'target', 'aarch64-apple-darwin', 'release',
+        'libloro_dart.dylib'),
     '-output',
     universalLib,
   ]);

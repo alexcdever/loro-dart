@@ -46,7 +46,6 @@ void main() async {
       path.join(projectRoot, 'lib', 'src'),
       '--c-output',
       path.join(projectRoot, 'lib', 'src', 'bridge_generated.h'),
-      '--no-dart3',
     ],
     workingDirectory: projectRoot,
   );

@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:loro_dart/loro_dart.dart';
-import 'package:loro_dart/src/frb_generated.dart';
 
 void main() {
   setUpAll(() async {
