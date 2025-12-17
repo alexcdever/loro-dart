@@ -64,7 +64,7 @@ Future<void> buildAndroid(String rustDir) async {
   // 查找最新版本的 NDK
   final ndkVersions = ndkDir
       .listSync()
-      .where((entity) => entity is Directory)
+      .whereType<Directory>()
       .map((entity) => entity.path)
       .toList();
 
