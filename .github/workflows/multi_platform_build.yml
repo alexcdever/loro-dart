@@ -61,6 +61,9 @@ jobs:
       - name: Install flutter_rust_bridge_codegen
         run: cargo install flutter_rust_bridge_codegen
 
+      - name: Install cargo-expand
+        run: cargo install cargo-expand
+
       - name: Install dependencies
         run: flutter pub get
 
