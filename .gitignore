@@ -72,3 +72,6 @@ rust/Cargo.lock
 .env.local
 .env.*.local
 .cache/
+
+# FVM Version Cache
+.fvm/
