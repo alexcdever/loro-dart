@@ -152,10 +152,20 @@ Future<void> buildAndroid(String rustDir) async {
 Future<void> buildLinux(String rustDir) async {
   stdout.write('🐧 构建 Linux 动态库...\n');
 
+  // 处理 RUSTFLAGS 环境变量，去掉 `-C target-feature=+crt-static` 选项
+  // 因为这个选项与 proc-macro crate 不兼容，会导致构建失败
+  final env = <String, String>{...Platform.environment};
+  if (env.containsKey('RUSTFLAGS')) {
+    env['RUSTFLAGS'] = env['RUSTFLAGS']!
+        .replaceAll('-C target-feature=+crt-static', '')
+        .trim();
+  }
+
   final result = await Process.run(
     'cargo',
     ['build', '--release'],
     workingDirectory: rustDir,
+    environment: env,
   );
 
   if (result.exitCode != 0) {

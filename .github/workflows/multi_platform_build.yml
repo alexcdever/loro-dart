@@ -75,6 +75,9 @@ jobs:
       - name: Install cargo-expand
         run: cargo install cargo-expand
 
+      - name: Install cargo-ndk
+        run: cargo install cargo-ndk
+
       - name: Install dependencies
         run: flutter pub get
 
