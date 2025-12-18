@@ -81,8 +81,10 @@ jobs:
           cd rust
           cargo build
 
+      # 使用 Bash shell 执行重试逻辑，确保跨平台兼容性
       - name: Install flutter_rust_bridge_codegen
         # 添加重试机制，最多重试3次
+        shell: bash
         run: |
           for i in {1..3}; do
             echo "Attempt $i: Installing flutter_rust_bridge_codegen..."
@@ -94,6 +96,7 @@ jobs:
 
       - name: Install cargo-expand
         # 添加重试机制，最多重试3次
+        shell: bash
         run: |
           for i in {1..3}; do
             echo "Attempt $i: Installing cargo-expand..."
@@ -105,6 +108,7 @@ jobs:
 
       - name: Install cargo-ndk
         # 添加重试机制，最多重试3次
+        shell: bash
         run: |
           for i in {1..3}; do
             echo "Attempt $i: Installing cargo-ndk..."
@@ -116,6 +120,7 @@ jobs:
 
       - name: Install dependencies
         # 添加重试机制，最多重试3次
+        shell: bash
         run: |
           for i in {1..3}; do
             echo "Attempt $i: Installing Flutter dependencies..."
@@ -134,6 +139,7 @@ jobs:
 
       - name: Build native libraries
         # 添加重试机制，最多重试2次
+        shell: bash
         run: |
           for i in {1..2}; do
             echo "Attempt $i: Building native libraries..."
