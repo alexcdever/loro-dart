@@ -253,10 +253,17 @@ Future<void> buildMacOS(String rustDir) async {
 
   // Create universal binary
   stdout.write('  创建通用二进制文件...\n');
-  final outputDir = path.join(Directory.current.path, 'macos');
-  await Directory(outputDir).create(recursive: true);
 
-  final universalLib = path.join(outputDir, 'libloro_dart.dylib');
+  // 创建 macos 目录下的通用二进制文件
+  final macosOutputDir = path.join(Directory.current.path, 'macos');
+  await Directory(macosOutputDir).create(recursive: true);
+  final macosUniversalLib = path.join(macosOutputDir, 'libloro_dart.dylib');
+
+  // 创建 rust/target/release/ 目录下的通用二进制文件
+  // 用于 flutter test 测试
+  final releaseOutputDir = path.join(rustDir, 'target', 'release');
+  await Directory(releaseOutputDir).create(recursive: true);
+  final releaseUniversalLib = path.join(releaseOutputDir, 'libloro_dart.dylib');
 
   result = await Process.run('lipo', [
     '-create',
@@ -265,7 +272,7 @@ Future<void> buildMacOS(String rustDir) async {
     path.join(rustDir, 'target', 'aarch64-apple-darwin', 'release',
         'libloro_dart.dylib'),
     '-output',
-    universalLib,
+    macosUniversalLib,
   ]);
 
   if (result.exitCode != 0) {
@@ -274,5 +281,9 @@ Future<void> buildMacOS(String rustDir) async {
     exit(1);
   }
 
-  stdout.write('  ✓ 在 $universalLib 创建了通用二进制文件\n');
+  // 复制通用二进制文件到 rust/target/release/ 目录下，用于 flutter test 测试
+  await File(macosUniversalLib).copy(releaseUniversalLib);
+
+  stdout.write('  ✓ 在 $macosUniversalLib 创建了通用二进制文件\n');
+  stdout.write('  ✓ 复制到 $releaseUniversalLib 用于测试\n');
 }

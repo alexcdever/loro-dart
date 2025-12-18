@@ -88,17 +88,17 @@ jobs:
       - name: Analyze project source
         run: dart analyze --fatal-infos
 
-      - name: Run tests
-        run: flutter test
-        if: matrix.os != 'ubuntu-latest' # Skip Flutter tests on Linux due to platform limitations
-
       - name: Build native libraries
         run: dart run ${{ matrix.build-script }}
         env:
           # Set NDK path for Android builds
-          ANDROID_NDK_ROOT: ${{ matrix.os == 'windows-latest' && 'C:\\Android\\ndk' || matrix.os == 'macos-latest' && '$HOME/Library/Android/sdk/ndk' || '/usr/local/lib/android/sdk/ndk' }}
+          ANDROID_NDK_ROOT: ${{ matrix.os == 'windows-latest' && 'C:\Android\ndk' || matrix.os == 'macos-latest' && '$HOME/Library/Android/sdk/ndk' || '/usr/local/lib/android/sdk/ndk' }}
           # Set Rust target architectures
           RUSTFLAGS: "-C target-feature=+crt-static"
+
+      - name: Run tests
+        run: flutter test
+        if: matrix.os != 'ubuntu-latest' # Skip Flutter tests on Linux due to platform limitations
 
   # Publish to pub.dev on tag push
   publish:
