@@ -55,6 +55,16 @@ void main() async {
       path.join(projectRoot, 'lib', 'src', 'bridge_generated.h'),
     ],
     workingDirectory: projectRoot,
+    // 临时清除或修改 RUSTFLAGS 环境变量，去掉 `-C target-feature=+crt-static` 选项
+    // 因为这个选项与 proc-macro crate 不兼容，会导致 cargo expand 命令失败
+    environment: {
+      ...Platform.environment,
+      'RUSTFLAGS': Platform.environment.containsKey('RUSTFLAGS')
+          ? Platform.environment['RUSTFLAGS']!
+              .replaceAll('-C target-feature=+crt-static', '')
+              .trim()
+          : '',
+    },
   );
 
   stdout.write(generateResult.stdout);
