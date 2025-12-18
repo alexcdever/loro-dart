@@ -115,6 +115,20 @@ Future<void> buildAndroid(String rustDir) async {
       continue;
     }
 
+    // 检查构建输出文件是否存在
+    final libSource = path.join(
+      rustDir,
+      'target',
+      target,
+      'release',
+      'libloro_dart.so',
+    );
+
+    if (!File(libSource).existsSync()) {
+      stderr.write('⚠️ 构建输出文件不存在: $libSource，跳过复制...\n');
+      continue;
+    }
+
     // 复制到 Android jniLibs 目录
     final outputDir = path.join(
       Directory.current.path,
@@ -127,19 +141,17 @@ Future<void> buildAndroid(String rustDir) async {
 
     await Directory(outputDir).create(recursive: true);
 
-    final libSource = path.join(
-      rustDir,
-      'target',
-      target,
-      'release',
-      'libloro_dart.so',
-    );
-
     final libDest = path.join(outputDir, 'libloro_dart.so');
 
-    await File(libSource).copy(libDest);
-    stdout.write('  ✓ 复制到 $libDest\n');
-    anySuccess = true;
+    try {
+      await File(libSource).copy(libDest);
+      stdout.write('  ✓ 复制到 $libDest\n');
+      anySuccess = true;
+    } catch (e) {
+      stderr.write('⚠️ 复制 $libSource 到 $libDest 失败，跳过...\n');
+      stderr.write('错误: $e\n');
+      continue;
+    }
   }
 
   if (!anySuccess) {
@@ -169,14 +181,12 @@ Future<void> buildLinux(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    stderr.write('❌ 构建 Linux 失败\n');
+    stderr.write('⚠️ 构建 Linux 失败，跳过...\n');
     stderr.write(result.stderr);
-    exit(1);
+    return;
   }
 
-  final outputDir = path.join(Directory.current.path, 'linux');
-  await Directory(outputDir).create(recursive: true);
-
+  // 检查构建输出文件是否存在
   final libSource = path.join(
     rustDir,
     'target',
@@ -184,8 +194,22 @@ Future<void> buildLinux(String rustDir) async {
     'libloro_dart.so',
   );
 
+  if (!File(libSource).existsSync()) {
+    stderr.write('⚠️ 构建输出文件不存在: $libSource，跳过复制...\n');
+    return;
+  }
+
+  final outputDir = path.join(Directory.current.path, 'linux');
+  await Directory(outputDir).create(recursive: true);
+
   final libDest = path.join(outputDir, 'libloro_dart.so');
 
-  await File(libSource).copy(libDest);
-  stdout.write('  ✓ 复制到 $libDest\n');
+  try {
+    await File(libSource).copy(libDest);
+    stdout.write('  ✓ 复制到 $libDest\n');
+  } catch (e) {
+    stderr.write('⚠️ 复制 $libSource 到 $libDest 失败，跳过...\n');
+    stderr.write('错误: $e\n');
+    return;
+  }
 }
