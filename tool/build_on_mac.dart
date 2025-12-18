@@ -15,8 +15,16 @@ void main() async {
   // 2. 构建动态库
   stdout.write('\n🔨 开始构建动态库...\n\n');
 
-  // macOS 上可以构建 Android、iOS 和 macOS
-  await buildAndroid(rustDir);
+  // macOS 上可以构建 iOS 和 macOS
+  // 只有当 NDK 路径存在时才构建 Android 动态库
+  final ndkPath = Platform.environment['ANDROID_NDK_ROOT'] ??
+      Platform.environment['ANDROID_NDK_HOME'] ??
+      '~/Library/Android/sdk/ndk';
+  final ndkDir = Directory(ndkPath);
+  if (ndkDir.existsSync() &&
+      ndkDir.listSync().whereType<Directory>().isNotEmpty) {
+    await buildAndroid(rustDir);
+  }
   await buildIOS(rustDir);
   await buildMacOS(rustDir);
 
@@ -153,6 +161,8 @@ Future<void> buildAndroid(String rustDir) async {
 Future<void> buildIOS(String rustDir) async {
   stdout.write('🍎 构建 iOS 动态库...\n');
 
+  bool anySuccess = false;
+
   // Build for iOS device (arm64)
   stdout.write('  构建 iOS 设备 (arm64)...\n');
   var result = await Process.run(
@@ -162,13 +172,15 @@ Future<void> buildIOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    stderr.write('❌ 构建 iOS 设备失败\n');
-    stderr.write(result.stderr);
-    exit(1);
+    stderr.write('⚠️ 构建 iOS 设备 (arm64) 失败，跳过...\n');
+    stderr.write('错误: ${result.stderr}\n');
+  } else {
+    stdout.write('  ✓ 构建 iOS 设备 (arm64) 成功\n');
+    anySuccess = true;
   }
 
   // Build for iOS simulator (x86_64 and arm64)
-  stdout.write('  构建 iOS 模拟器...\n');
+  stdout.write('  构建 iOS 模拟器 (x86_64)...\n');
   result = await Process.run(
     'cargo',
     ['build', '--release', '--target', 'x86_64-apple-ios'],
@@ -176,11 +188,14 @@ Future<void> buildIOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    stderr.write('❌ 构建 iOS 模拟器 (x86_64) 失败\n');
-    stderr.write(result.stderr);
-    exit(1);
+    stderr.write('⚠️ 构建 iOS 模拟器 (x86_64) 失败，跳过...\n');
+    stderr.write('错误: ${result.stderr}\n');
+  } else {
+    stdout.write('  ✓ 构建 iOS 模拟器 (x86_64) 成功\n');
+    anySuccess = true;
   }
 
+  stdout.write('  构建 iOS 模拟器 (arm64)...\n');
   result = await Process.run(
     'cargo',
     ['build', '--release', '--target', 'aarch64-apple-ios-sim'],
@@ -188,35 +203,61 @@ Future<void> buildIOS(String rustDir) async {
   );
 
   if (result.exitCode != 0) {
-    stderr.write('❌ 构建 iOS 模拟器 (arm64) 失败\n');
-    stderr.write(result.stderr);
-    exit(1);
+    stderr.write('⚠️ 构建 iOS 模拟器 (arm64) 失败，跳过...\n');
+    stderr.write('错误: ${result.stderr}\n');
+  } else {
+    stdout.write('  ✓ 构建 iOS 模拟器 (arm64) 成功\n');
+    anySuccess = true;
   }
 
-  // Create XCFramework
-  stdout.write('  创建 XCFramework...\n');
-  final outputDir = path.join(Directory.current.path, 'ios');
-  await Directory(outputDir).create(recursive: true);
+  // 只有当至少一个构建成功时，才尝试创建 XCFramework
+  if (anySuccess) {
+    // Create XCFramework
+    stdout.write('  创建 XCFramework...\n');
+    final outputDir = path.join(Directory.current.path, 'ios');
+    await Directory(outputDir).create(recursive: true);
 
-  // Create universal binary for simulator
-  final simLibPath =
-      path.join(rustDir, 'target', 'ios-sim-universal', 'release');
-  await Directory(simLibPath).create(recursive: true);
+    // Create universal binary for simulator
+    final simLibPath =
+        path.join(rustDir, 'target', 'ios-sim-universal', 'release');
+    await Directory(simLibPath).create(recursive: true);
 
-  result = await Process.run('lipo', [
-    '-create',
-    path.join(
-        rustDir, 'target', 'x86_64-apple-ios', 'release', 'libloro_dart.a'),
-    path.join(rustDir, 'target', 'aarch64-apple-ios-sim', 'release',
-        'libloro_dart.a'),
-    '-output',
-    path.join(simLibPath, 'libloro_dart.a'),
-  ]);
+    // 检查需要的库文件是否存在
+    final x86_64SimLib = path.join(
+        rustDir, 'target', 'x86_64-apple-ios', 'release', 'libloro_dart.a');
+    final arm64SimLib = path.join(rustDir, 'target', 'aarch64-apple-ios-sim',
+        'release', 'libloro_dart.a');
 
-  if (result.exitCode != 0) {
-    stderr.write('⚠️ 创建模拟器通用二进制文件失败，跳过...\n');
+    final simLibFiles = <String>[];
+    if (File(x86_64SimLib).existsSync()) {
+      simLibFiles.add(x86_64SimLib);
+    }
+    if (File(arm64SimLib).existsSync()) {
+      simLibFiles.add(arm64SimLib);
+    }
+
+    if (simLibFiles.isNotEmpty) {
+      result = await Process.run('lipo', [
+        '-create',
+        ...simLibFiles,
+        '-output',
+        path.join(simLibPath, 'libloro_dart.a'),
+      ]);
+
+      if (result.exitCode != 0) {
+        stderr.write('⚠️ 创建模拟器通用二进制文件失败，跳过...\n');
+        stderr.write('错误: ${result.stderr}\n');
+      } else {
+        stdout.write('  ✓ 创建了 iOS 通用库\n');
+      }
+    } else {
+      stderr.write('⚠️ 没有找到可用的 iOS 模拟器库文件，跳过创建通用二进制文件...\n');
+    }
   } else {
-    stdout.write('  ✓ 创建了 iOS 通用库\n');
+    stderr.write('⚠️ 所有 iOS 目标构建失败。请确保你已安装并配置了必要的 Rust 目标。\n');
+    stderr.write('你可以通过以下命令安装必要的目标：\n');
+    stderr.write(
+        '  rustup target add aarch64-apple-ios x86_64-apple-ios aarch64-apple-ios-sim\n');
   }
 }
 
