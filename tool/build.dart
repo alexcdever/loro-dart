@@ -214,7 +214,8 @@ Future<void> buildIOS(String rustDir) async {
   ]);
 
   if (result.exitCode != 0) {
-    stderr.write('⚠️ Failed to create universal simulator binary, skipping...\n');
+    stderr
+        .write('⚠️ Failed to create universal simulator binary, skipping...\n');
   } else {
     stdout.write('  ✓ Created iOS universal library\n');
   }

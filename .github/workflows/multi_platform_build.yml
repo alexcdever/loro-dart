@@ -58,6 +58,17 @@ jobs:
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
           restore-keys: ${{ runner.os }}-pub-
 
+      - name: Install fvm
+        run: dart pub global activate fvm
+
+      - name: Use fvm
+        run: fvm install
+
+      - name: Check Rust build
+        run: |
+          cd rust
+          cargo build
+
       - name: Install flutter_rust_bridge_codegen
         run: cargo install flutter_rust_bridge_codegen
 
